@@ -1,12 +1,14 @@
 import React from "react";
 
-function tvShow() {
+function TVShow(props) {
+  const { image, selectShow } = props; // Destructure props
+
   return (
     <div>
       <br />
-      <img src={props.image.medium} onClick={props.selectShow} alt="" />
+      <img src={image.medium} onClick={selectShow} alt="" />
     </div>
   );
 }
 
-export default tvShow;
+export default TVShow;

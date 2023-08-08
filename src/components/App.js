@@ -13,12 +13,16 @@ function App() {
   const [filterByRating, setFilterByRating] = useState("");
 
   useEffect(() => {
-    Adapter.getShows().then((shows) => setShows(shows));
+    Adapter.getShows()
+      .then((shows) => setShows(shows))
+      .catch((error) => {
+        console.error('Error setting shows:', error);
+      });
   }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  });
+  }, []);
 
   function handleSearch(e) {
     setSearchTerm(e.target.value.toLowerCase());
@@ -31,16 +35,20 @@ function App() {
   }
 
   function selectShow(show) {
-    Adapter.getShowEpisodes(show.id).then((episodes) => {
-      setSelectedShow(show);
-      setEpisodes(episodes);
-    });
+    Adapter.getShowEpisodes(show.id)
+      .then((episodes) => {
+        setSelectedShow(show);
+        setEpisodes(episodes);
+      })
+      .catch((error) => {
+        console.error('Error setting episodes:', error);
+      });
   }
 
   let displayShows = shows;
   if (filterByRating) {
     displayShows = displayShows.filter((s) => {
-      s.rating.average >= filterByRating;
+      return s.rating.average >= filterByRating;
     });
   }
 
@@ -56,7 +64,7 @@ function App() {
           {!!selectedShow ? (
             <SelectedShowContainer
               selectedShow={selectedShow}
-              allEpisodes={episodes}
+              episodes={episodes}
             />
           ) : (
             <div />
